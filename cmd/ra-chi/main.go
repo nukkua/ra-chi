@@ -11,7 +11,7 @@ import (
 func main (){
 
 	r:= router.SetupRouter();
-
+	fmt.Println("Initializing server");
 	fmt.Println("Serving at port :8080");
 	log.Fatal(http.ListenAndServe(":8080", r));
 }
