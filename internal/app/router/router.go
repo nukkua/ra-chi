@@ -15,7 +15,6 @@ func SetupRouter () *chi.Mux{
 	
 	r:= chi.NewRouter();
 	r.Use(middleware.Logger);
-	
 	r.Post("/register", handlers.CreateUser(db))
 	r.Post("/login", handlers.LoginUser(db))
 

@@ -41,14 +41,14 @@ func CreateUser(db *gorm.DB) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		hashedPassword, errorHashing := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
+		hashedPassword, errorHashing := bcrypt.GenerateFromPassword([]byte(user.Password), 1)
 		if errorHashing != nil {
 			http.Error(w, errorHashing.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		user.PasswordHash = hashedPassword
-		user.Password = ""
+		user.Password =""
 		result := db.Create(&user)
 
 		if result.Error != nil {
@@ -72,6 +72,7 @@ func LoginUser(db *gorm.DB) http.HandlerFunc {
 
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
 
 		result := db.Where("username = ?", creds.Username).First(&user)
@@ -80,9 +81,7 @@ func LoginUser(db *gorm.DB) http.HandlerFunc {
 			http.Error(w, result.Error.Error(), http.StatusUnauthorized)
 			return
 		}
-
-
-		error := bcrypt.CompareHashAndPassword(user.PasswordHash, []byte(creds.Password));
+		error := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(creds.Password));
 		if  error != nil {
 			http.Error(w, error.Error(), http.StatusUnauthorized)
 			return
