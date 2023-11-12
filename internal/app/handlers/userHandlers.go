@@ -56,6 +56,7 @@ func CreateUser(db *gorm.DB) http.HandlerFunc {
 			return
 		}
 		w.WriteHeader(http.StatusCreated)
+		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"status": "user created"})
 
 		// Esto es para devolver un json siempre usado en handlers
@@ -105,6 +106,6 @@ func LoginUser(db *gorm.DB) http.HandlerFunc {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"token": tokenString})
+		json.NewEncoder(w).Encode(map[string]string{"access_token": tokenString})
 	}
 }
