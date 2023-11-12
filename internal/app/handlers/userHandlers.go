@@ -34,21 +34,26 @@ func GetUsers(db *gorm.DB) http.HandlerFunc {
 
 func CreateUser(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var user models.User
 
-		err := json.NewDecoder(r.Body).Decode(&user)
+		var userWithoutHash models.UserWithoutHash;
+
+		err := json.NewDecoder(r.Body).Decode(&userWithoutHash)
+
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		hashedPassword, errorHashing := bcrypt.GenerateFromPassword([]byte(user.Password), 1)
+		hashedPassword, errorHashing := bcrypt.GenerateFromPassword([]byte(userWithoutHash.Password), 1)
 		if errorHashing != nil {
 			http.Error(w, errorHashing.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		user.PasswordHash = hashedPassword
-		user.Password =""
+		user := models.User{
+			Username:     userWithoutHash.Username,
+			Email:        userWithoutHash.Email,
+			Password: hashedPassword,
+		}
 		result := db.Create(&user)
 
 		if result.Error != nil {
@@ -59,9 +64,6 @@ func CreateUser(db *gorm.DB) http.HandlerFunc {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"status": "user created"})
 
-		// Esto es para devolver un json siempre usado en handlers
-		// w.Header().Set("Content-Type", "application/json")
-		// json.NewEncoder(w).Encode(user)
 	}
 }
 func LoginUser(db *gorm.DB) http.HandlerFunc {
@@ -82,8 +84,8 @@ func LoginUser(db *gorm.DB) http.HandlerFunc {
 			http.Error(w, result.Error.Error(), http.StatusUnauthorized)
 			return
 		}
-		error := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(creds.Password));
-		if  error != nil {
+		error := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(creds.Password))
+		if error != nil {
 			http.Error(w, error.Error(), http.StatusUnauthorized)
 			return
 		}

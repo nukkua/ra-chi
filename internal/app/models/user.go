@@ -8,8 +8,13 @@ type User struct {
 	gorm.Model
 	Username string  `json:"username" gorm:"unique"`
 	Email string  `json:"email"`
+	Password []byte `json:"password"`
+}
+
+type UserWithoutHash struct{
+	Username string `json:"username"`
+	Email string `json:"email"`
 	Password string `json:"password"`
-	PasswordHash []byte `json:"-"`
 }
 
 
