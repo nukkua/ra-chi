@@ -15,12 +15,12 @@ import (
 var JwtKey = []byte("secret_key")
 
 type Credentials struct {
-	Username string `json:"username"`
+ 	Email string `json:"email"`
 	Password string `json:"password"`
 }
 
 type Claims struct {
-	Username string `json:"username"`
+	Email string `json:"email"`
 	jwt.RegisteredClaims
 }
 
@@ -78,7 +78,7 @@ func LoginUser(db *gorm.DB) http.HandlerFunc {
 			return
 		}
 
-		result := db.Where("username = ?", creds.Username).First(&user)
+		result := db.Where("email = ?", creds.Email).First(&user)
 
 		if result.Error != nil {
 			http.Error(w, result.Error.Error(), http.StatusUnauthorized)
@@ -92,7 +92,7 @@ func LoginUser(db *gorm.DB) http.HandlerFunc {
 		expirationTime := time.Now().Add(30 * time.Minute)
 
 		claims := &Claims{
-			Username: creds.Username,
+			Email: creds.Email,
 			RegisteredClaims: jwt.RegisteredClaims{
 				ExpiresAt: jwt.NewNumericDate(expirationTime),
 			},
@@ -108,6 +108,6 @@ func LoginUser(db *gorm.DB) http.HandlerFunc {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"access_token": tokenString})
+		json.NewEncoder(w).Encode(map[string]string{"access_token": tokenString, "username": user.Username , "email": user.Email})
 	}
 }
