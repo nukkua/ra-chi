@@ -14,7 +14,7 @@ import (
 func SetupDatabase () * gorm.DB {
 	
 	
-	requiredEnvVars := []string{"DB_USER","DB_PASSWORD", "DB_HOST", "DB_NAME"}
+	requiredEnvVars := []string{"DB_USER","DB_PASSWORD", "DB_HOST", "DB_NAME","DB_PORT"}
 
 	for _, envVar := range requiredEnvVars{
 		if os.Getenv(envVar) == ""{
@@ -22,11 +22,13 @@ func SetupDatabase () * gorm.DB {
 		}
 	}
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-	os.Getenv("DB_USER"),
-	os.Getenv("DB_PASSWORD"),
-	os.Getenv("DB_HOST"),
-	os.Getenv("DB_NAME"))
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASSWORD")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
+
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPass, dbHost, dbPort, dbName)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
