@@ -6,17 +6,16 @@ import (
 
 type User struct {
 	gorm.Model
-	Username string  `json:"username" gorm:"unique"`
-	Email string  `json:"email"`
+	Username string `json:"username" gorm:"unique"`
+	Email    string `json:"email"`
 	Password []byte `json:"password"`
 }
 
-type UserWithoutHash struct{
+type UserWithoutHash struct {
 	Username string `json:"username"`
-	Email string `json:"email"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
-
 
 //its a gorm hook BeforeSave and BeforeCreate
 
