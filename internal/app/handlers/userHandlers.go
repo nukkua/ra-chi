@@ -15,7 +15,7 @@ import (
 var JwtKey = []byte("secret_key")
 
 type Credentials struct {
- 	Email string `json:"email"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -35,7 +35,7 @@ func GetUsers(db *gorm.DB) http.HandlerFunc {
 func CreateUser(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		var userWithoutHash models.UserWithoutHash;
+		var userWithoutHash models.UserWithoutHash
 
 		err := json.NewDecoder(r.Body).Decode(&userWithoutHash)
 
@@ -50,8 +50,8 @@ func CreateUser(db *gorm.DB) http.HandlerFunc {
 		}
 
 		user := models.User{
-			Username:     userWithoutHash.Username,
-			Email:        userWithoutHash.Email,
+			Username: userWithoutHash.Username,
+			Email:    userWithoutHash.Email,
 			Password: hashedPassword,
 		}
 		result := db.Create(&user)
@@ -108,6 +108,6 @@ func LoginUser(db *gorm.DB) http.HandlerFunc {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"access_token": tokenString, "username": user.Username , "email": user.Email})
+		json.NewEncoder(w).Encode(map[string]string{"access_token": tokenString, "username": user.Username, "email": user.Email})
 	}
 }
