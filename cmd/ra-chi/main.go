@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/nukkua/ra-chi/internal/router"
+	"github.com/nukkua/ra-chi/internal/app/router"
 )
 
 func main (){

@@ -1,13 +1,13 @@
 package router;
 
 import (
-	"github.com/nukkua/ra-chi/internal/handlers"
-	"github.com/nukkua/ra-chi/internal/database"
+	"github.com/nukkua/ra-chi/internal/app/handlers"
+	"github.com/nukkua/ra-chi/internal/app/database"
 	
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/nukkua/ra-chi/internal/middlewares"
+	"github.com/nukkua/ra-chi/internal/app/middlewares"
 )
 
 func SetupRouter () *chi.Mux{

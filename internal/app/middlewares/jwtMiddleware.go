@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/nukkua/ra-chi/internal/handlers"
+	"github.com/nukkua/ra-chi/internal/app/handlers"
 )
 
 func JwtAuthentication (next http.Handler) http.Handler{

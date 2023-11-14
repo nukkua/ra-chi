@@ -7,7 +7,7 @@ import (
 
 	"gorm.io/gorm"
 	"gorm.io/driver/mysql"
-	"github.com/nukkua/ra-chi/internal/models"
+	"github.com/nukkua/ra-chi/internal/app/models"
 )
 
 
