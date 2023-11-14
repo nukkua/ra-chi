@@ -17,7 +17,7 @@ func SetupRouter() *chi.Mux {
 	// Configura el middleware CORS aquí
 	corsMiddleware := cors.New(cors.Options{
 		// Define tus opciones de CORS aquí
-		AllowedOrigins:   []string{"https://tufrontend.com"}, // o []string{"*"} para desarrollo
+		AllowedOrigins:   []string{"*"}, // o []string{"*"} para desarrollo
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{},
