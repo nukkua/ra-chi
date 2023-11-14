@@ -22,5 +22,5 @@ func main (){
 	}
 
 
-	log.Fatal(http.ListenAndServe("0.0.0.0:" + port, r));
+	log.Fatal(http.ListenAndServe("localhost:" + port, r));
 }
