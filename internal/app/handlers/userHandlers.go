@@ -20,6 +20,8 @@ type Credentials struct {
 }
 
 type Claims struct {
+	UserID uint `json:"user_id"`
+	Username string `json:"username"`
 	Email string `json:"email"`
 	jwt.RegisteredClaims
 }
@@ -92,6 +94,8 @@ func LoginUser(db *gorm.DB) http.HandlerFunc {
 		expirationTime := time.Now().Add(30 * time.Minute)
 
 		claims := &Claims{
+			UserID: uint(user.ID),
+			Username: user.Username,
 			Email: creds.Email,
 			RegisteredClaims: jwt.RegisteredClaims{
 				ExpiresAt: jwt.NewNumericDate(expirationTime),
